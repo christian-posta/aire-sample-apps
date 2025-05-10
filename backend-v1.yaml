@@ -15,6 +15,14 @@ spec:
     version: v1
   type: ClusterIP
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-v1-configmap
+  namespace: default
+data:
+  CONFIG_PATH: "/etc/config"  
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -55,3 +63,8 @@ spec:
           value: "backend-v1"
         - name: "MESSAGE"
           value: "Hello From backend (v1)!"
+        - name: APP_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: backend-v1-configmap
+              key: APP_CONFIG          
